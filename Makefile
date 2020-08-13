@@ -10,11 +10,8 @@ else
     endif
 endif
 
-doFileFolder = "doFiles"
-logFolder = "Logs"
-
-doFiles = $(wildcard $(doFileFolder)/*.do)
-logFiles = $(patsubst $(doFileFolder)/%,$(logFolder)/%,$(doFiles:%.do=%.log))
+doFiles = $(wildcard doFiles/*.do)
+logFiles = $(patsubst doFiles/%,$Logs/%,$(doFiles:%.do=%.log))
 
 .PHONY: all clean_logs clean_doc clean_all
 
@@ -25,7 +22,7 @@ memo: Documentation/memo.docx
 Documentation/memo.docx: Documentation/memo.md
 	cd Documentation && pandoc memo.md --filter pandoc-citeproc -o memo.docx
 
-$(logFolder)/%.log: $(doFileFolder)/%.do
+Logs/%.log: doFiles/%.do
 	$(STATA) $(FLAGS) $<
 
 clean_logs:
